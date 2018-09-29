@@ -1,10 +1,5 @@
 .idea/
 
-# Generated files
-main.html
-main.js
-main.wasm
-
 # Logs
 logs
 *.log

@@ -11,7 +11,9 @@
 
 <hr/>
 <div>
-  <button class="mybutton">exec myFunction</button>
+  <input type="number" placeholder="x" id="x-input">
+  <input type="number" placeholder="y" id="y-input">
+  <button id="mybutton">exec myFunction</button>
 </div>
 
 <script type='text/javascript'>
@@ -38,15 +40,18 @@
     }
   };
 
-  document.querySelector('.mybutton').addEventListener('click', function () {
+  document.querySelector('#mybutton').addEventListener('click', function () {
+    var x = document.querySelector('#x-input').value;
+    var y = document.querySelector('#y-input').value;
     var result = Module.ccall(
       'myFunction', // name of C function
-      null, // return type
-      null, // argument types
-      null); // arguments
+      'number', // return type
+      ['number', 'number'], // argument types
+      [x, y]); // arguments
     console.log(result);
   });
 </script>
-{{{ SCRIPT }}}
+<script async type="text/javascript" src="main.js"></script>
 </body>
 </html>
+
