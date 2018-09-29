@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Emscripten-Generated Code</title>
+</head>
+<body>
+
+<textarea style="width: 600px" id="output" rows="15" readonly></textarea>
+
+<hr/>
+<div>
+  <input type="number" placeholder="x" id="x-input">
+  <button class="mybutton">exec myFunction (C)</button>
+</div>
+<br/>
+<div>
+  <input type="number" placeholder="x" id="x-input-2">
+  <button class="mybutton2">exec myFunction (JS)</button>
+</div>
+
+<script type='text/javascript'>
+  function fibonacciJs (x) {
+    if (x === 1 || x === 2) {
+      return 1;
+    }
+    return fibonacciJs(x - 1) + fibonacciJs(x - 2);
+  }
+</script>
+
+<script type='text/javascript'>
+  var Module = {
+    print: (function () {
+      var element = document.getElementById('output');
+      if (element) element.value = ''; // clear browser cache
+      return function (text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+        console.log(text);
+        if (element) {
+          element.value += text + '\n';
+          element.scrollTop = element.scrollHeight;
+        }
+      };
+    })(),
+    printErr: function (text) {
+      if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+      if (0) { // XXX disabled for safety typeof dump == 'function') {
+        dump(text + '\n'); // fast, straight to the real console
+      } else {
+        console.error(text);
+      }
+    }
+  };
+
+  document.querySelector('.mybutton').addEventListener('click', function () {
+    var x = document.querySelector('#x-input').value;
+    var st = Date.now();
+    var result = Module.ccall(
+      'fibonacci', // name of C function
+      'number', // return type
+      ['number'], // argument types
+      [x]); // arguments
+    var et = Date.now();
+    console.log('C:', (et - st) + 'ms', result);
+  });
+
+  document.querySelector('.mybutton2').addEventListener('click', function () {
+    var x = document.querySelector('#x-input-2').value;
+    var st = Date.now();
+    var result = fibonacciJs(parseInt(x));
+    var et = Date.now();
+    console.log('JS:', (et - st) + 'ms', result);
+  });
+</script>
+<script async type="text/javascript" src="main.js"></script>
+</body>
+</html>
+
