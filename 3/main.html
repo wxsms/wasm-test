@@ -62,7 +62,7 @@
       ['number'], // argument types
       [x]); // arguments
     var et = Date.now();
-    console.log('C:', (et - st) + 'ms', result);
+    Module.print(`x=${x}, ${result}, ${(et - st)}ms (c)`);
   });
 
   document.querySelector('.mybutton2').addEventListener('click', function () {
@@ -70,7 +70,7 @@
     var st = Date.now();
     var result = fibonacciJs(parseInt(x));
     var et = Date.now();
-    console.log('JS:', (et - st) + 'ms', result);
+    Module.print(`x=${x}, ${result}, ${(et - st)}ms (js)`);
   });
 </script>
 <script async type="text/javascript" src="main.js"></script>
