@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Emscripten-Generated Code</title>
+</head>
+<body>
+<script type='text/javascript'>
+  const test = async function () {
+    const file = await fetch('./main.wasm');
+    const memory = new window.WebAssembly.Memory({ initial: 1 });
+    const mod = await window.WebAssembly.instantiateStreaming(file, {
+      env: {
+        mem: memory,
+      },
+    });
+    let result;
+    result = mod.instance.exports.get();  // 调用 WebAssembly 模块导出的 get 函数
+    console.log(result);  // 1
+    memory.grow(2);
+    result = mod.instance.exports.get();  // 调用 WebAssembly 模块导出的 get 函数
+    console.log(result);  // 3
+  };
+
+  test()
+</script>
+</body>
+</html>
+
